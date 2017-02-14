@@ -16,14 +16,14 @@ public class UserMenu {
 	private Scanner input = new Scanner(System.in);//scanner
 	private Inventory products = new Inventory();//instance of products
 	
-	int shipping;//stores numeric value for shipping costs
+	float shipping;//stores numeric value for shipping costs
 	int valid;//flag for validation loop
 	int sku;   //numeric value for SKU input
 	String title;  //String value for title input
 	float price; //float value for price of product input
 	int quantity; //numeric value for quantity of product input
 	int upc; //numeric value for Movie UPC input
-	int isbn; //numeric value for Book ISBN input
+	double isbn; //numeric value for Book ISBN input
 	String author; //String value for Book author input
 	int weight; //numeric value for Toy weight input
 	
@@ -32,12 +32,11 @@ public class UserMenu {
 	 * Gets input from user for menu choice. Validates number is correct
 	 * @return Returns user number as int
 	 */
-	
 	public int getNumericMenuOption() {
 		
 		valid = 0;
 		do{
-		System.out.println("Online Store Inventory Menu\n");
+		System.out.println("\nOnline Store Inventory Menu\n");
 		System.out.println("1. Add product ");
 		System.out.println("2. Remove product ");
 		System.out.println("3. Find product by sku ");
@@ -49,8 +48,8 @@ public class UserMenu {
 		System.out.println("\nEnter your choice:");
 		if(input.hasNextInt()){
 			userChoice = input.nextInt();
-			if(userChoice <1 || userChoice > 8){
-				System.out.println("Please enter a number from 1-8");
+			if(userChoice < 1 || userChoice > 8){
+				System.out.println("Please enter a number from 1 thru 7...");
 				valid = 0;
 			}
 			if(userChoice >=1 && userChoice < 8)
@@ -58,7 +57,7 @@ public class UserMenu {
 			
 		}
 		else{
-			System.out.println("Please enter a number from 1-8");
+			System.out.println("Please enter a number from 1 thru 7...");
 			valid = 0;
 			input.next();
 			
@@ -72,8 +71,6 @@ public class UserMenu {
 	/**
 	 * Chooses correct menu option based on user input
 	 */
-	
-	
 	public void handleUserChoice() {
 		switch (this.userChoice)
 		{
@@ -121,7 +118,8 @@ public class UserMenu {
 				System.out.println("Enter the quantity of sold items: ");
 				quantity = input.nextInt();
 				System.out.println("Enter the cost of shipping: ");
-				shipping = input.nextInt();
+				shipping = input.nextFloat();
+				products.findProduct(sku,quantity,shipping);
 				
 			case 7:
 				products.save();
@@ -133,9 +131,8 @@ public class UserMenu {
 	}
 	
 	/**
-	 * Gets input for sku, title, price, quantity, upc for a movie object
+	 * Gets input for sku, title, price, quantity, upc to add a movie object
 	 */
-	
 	private void addMovie() {
 		input.nextLine();
 		System.out.println("Enter the SKU: ");
@@ -155,7 +152,7 @@ public class UserMenu {
 	}
 	
 	/**
-	 * Gets input for sku, title, price, quantity, author for a book object
+	 * Gets input for sku, title, price, quantity, author to add a book object
 	 */
 	private void addBook() {
 		input.nextLine();
@@ -169,7 +166,7 @@ public class UserMenu {
 		System.out.println("Enter the quantity: ");
 		quantity = input.nextInt();
 		System.out.println("Enter the ISBN: ");
-		isbn = input.nextInt();
+		isbn = input.nextDouble();
 		System.out.println("Enter the author: ");
 		input.nextLine();
 		author = input.nextLine();
@@ -179,7 +176,7 @@ public class UserMenu {
 	}
 	
 	/**
-	 * Gets input for sku, title, price, quantity, weight for a toy object
+	 * Gets input for sku, title, price, quantity, weight to add a toy object
 	 */
 	private void addToy() {
 		input.nextLine();

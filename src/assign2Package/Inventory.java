@@ -1,5 +1,6 @@
 package assign2Package;
 import java.io.*;
+import java.text.DecimalFormat;
 import java.util.*;
 /**
  * Inventory is class that holds an array of products
@@ -10,6 +11,7 @@ import java.util.*;
 public class Inventory implements Serializable{
 	
 	public ArrayList<Product> inventory = new ArrayList<Product>();
+	
 	/**
 	 * Creates an inventory array from a file. If no file exists then
 	 * the array is empty
@@ -34,6 +36,7 @@ public class Inventory implements Serializable{
         
  
 	}
+	
 	/**
 	 * Adds a product to the array. Also checks for duplicates
 	 * @param p The product to add
@@ -53,6 +56,7 @@ public class Inventory implements Serializable{
 		else
 			System.out.println("A product with that SKU already exists.");
 	}
+	
 	/**
 	 * Removes product from the array if the sku exists
 	 * @param sku The sku of the movie to be removed
@@ -75,12 +79,13 @@ public class Inventory implements Serializable{
 			System.out.println("Product successfully removed from inventory.");
 		}
 	}
+	
 	/**
 	 * Displays info for a specific product
 	 * @param sku The sku to search for.
 	 */
 	public void displayInfo(int sku) {
-		int found = 0;
+		int found = 0;//numeric value that updates if sku is found
 		for (Product p : inventory) {
 			if (p.getSku()==sku){
 				p.display();
@@ -91,6 +96,7 @@ public class Inventory implements Serializable{
 		if(found == 0)
 			System.out.println("SKU not found.");
 	}
+	
 	/**
 	 * Displays all of the products in order by SKU
 	 */
@@ -124,7 +130,7 @@ public class Inventory implements Serializable{
        try {
             FileOutputStream fos = new FileOutputStream("InventoryFile");
             ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(inventory);  //ArrayList and contents are serializable
+            oos.writeObject(inventory);
             fos.close();
      } catch (IOException e) {
             System.out.println("Problem with file output");
@@ -132,13 +138,35 @@ public class Inventory implements Serializable{
 		
 	}
 	
-//	public void processSale(int sku, int userQuantity){		
-//		for (Product p : inventory) {
-	//		if (p.getSku() == sku) {
-
-	//			}
-	//		}
-	//	}	
-
+	/**
+	 * Finds product in the arrayList and passes to product for calculations
+	 * @param-1- sku- user entered sku
+	 * @param-2- userQuantity- user entered quantity sold
+	 * @param-3- userShip- user entered shipping costs
+	 */
+	public void findProduct(int sku, int userQuantity, float userShip){
+		DecimalFormat priceFormat = new DecimalFormat("$##0.00");//format profit
+		int found = 0;//numeric value that updates if sku is found
+		double profit = 0;//numeric value to store total profit
+		for (Product p : inventory) {
+			if (p.getSku() == sku) {
+				if (p.getQuantity() < userQuantity) {
+					System.out.println("ERROR: Not enough in stock...");
+					found = 1;
+					break;
+				}
+				else {
+					profit = p.processSale(p, userQuantity, userShip);
+					System.out.println("Profit: \t\t" + 
+								priceFormat.format(profit));
+					found = 1;
+					break;
+				}
+			}
+		}
+		if (found == 0)
+			System.out.println("SKU not found.");
+	}	
+	
 
 }

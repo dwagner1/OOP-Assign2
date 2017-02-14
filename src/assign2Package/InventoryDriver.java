@@ -10,8 +10,9 @@ public class InventoryDriver {
 	@SuppressWarnings("resource")
 	public static void main(String args[]) {
 		
-		UserMenu menu = new UserMenu(); //UserMenu object to run and handle the user menu
-		int userChoice;  // numeric value for user's input to hand do-while loop
+		UserMenu menu = new UserMenu(); //UserMenu object to run and handle 
+										//the user menu
+		int userChoice;  //numeric value for user's input to hand do-while loop
 		
 		do {
 			userChoice = menu.getNumericMenuOption();
@@ -20,3 +21,4 @@ public class InventoryDriver {
 				
 	}
 }
+
